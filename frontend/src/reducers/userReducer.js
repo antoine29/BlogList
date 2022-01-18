@@ -1,9 +1,12 @@
+//ToDo: check if the reloaded state is equal to an regualr state
 import { getUserFromLocalStorage } from "../utils/utils"
 
-const initialState = getUserFromLocalStorage() !== null ?
-  JSON.parse(getUserFromLocalStorage()) : null
+const initialState = () => {
+  const userFromLocalStorage = getUserFromLocalStorage()
+  return userFromLocalStorage !== null ? JSON.parse(userFromLocalStorage) : null
+}
 
-const userReducer = (state = initialState, action) => {
+const userReducer = (state = initialState(), action) => {
   switch (action.type) {
   case 'SET_USER':
     return action.user
