@@ -1,4 +1,5 @@
 import { useLocation, useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from "../reducers/userReducer"
 
 export const useActualPath = () => {
@@ -8,9 +9,18 @@ export const useActualPath = () => {
 
 export const useAppLogout = () => {
   const history = useHistory()
-  window.localStorage.clear()
-  setUser(null)
-  history.push('/signin')
+  const dispatch = useDispatch()
+  const logout = () => {
+    // to clear user in local storage
+    window.localStorage.clear()
+    
+    // to clear user in redux store
+    dispatch(setUser(null))
+
+    history.push('/signin')
+  }
+
+  return logout
 }
 
 export const setUserToLocalStorage = user => {
@@ -20,4 +30,10 @@ export const setUserToLocalStorage = user => {
 export const getUserFromLocalStorage = () => {
   const storedUser = window.localStorage.getItem('loggedBlogAppUser')
   return storedUser
+}
+
+export const getBackendUrl = () => {
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
+  console.log(`Using BackendUrl: ${backendUrl}`)
+  return backendUrl
 }
