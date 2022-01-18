@@ -4,10 +4,11 @@ import { connect } from 'react-redux'
 import { Button, Container, Header, Comment, Form, Confirm } from 'semantic-ui-react'
 import { get, comment } from '../services/blogs'
 import { deleteBlog, getBlogs } from '../reducers/blogsReducer'
+import { openSignInRequiredModal } from '../reducers/layoutReducer'
 import Blog from './Blog'
 import ResponsiveContainer from './ResponsiveContainer'
 
-const FullBlog = ({ deleteBlog, getBlogs, blogs, user }) => {
+const FullBlog = ({ deleteBlog, getBlogs, blogs, user, openSignInRequiredModal }) => {
   // ToDo: Split this into container comp and representational comp
   const history = useHistory()
   const blogMatcher = useRouteMatch('/blogs/:id')
@@ -40,10 +41,15 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs, user }) => {
   }
 
   const addCommentHandler = async event => {
-    event.preventDefault()
-    let commentedBlog = await comment(blog.id, { comment: newComment })
-    setBlog(commentedBlog)
-    setNewComment('')
+    if(!!user){
+      event.preventDefault()
+      let commentedBlog = await comment(blog.id, { comment: newComment })
+      setBlog(commentedBlog)
+      setNewComment('')
+    }
+    else{
+      openSignInRequiredModal()
+    }
   }
 
   let logedUser = JSON.parse(window.localStorage.getItem('loggedBlogAppUser'))
@@ -61,10 +67,11 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs, user }) => {
           {blog.comments.map((comment, index) =>
           <Comment key={comment+index}>
             <Comment.Content>
-              <Comment.Author as='a'>Anon {index}</Comment.Author>
+              <Comment.Author as='a'>{blog.user.name}</Comment.Author>
               <Comment.Text>{comment}</Comment.Text>
             </Comment.Content>
           </Comment>)}
+          {!!user &&
           <Form reply>
             <Form.TextArea
               value={newComment}
@@ -72,10 +79,15 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs, user }) => {
                 event.preventDefault()
                 setNewComment(event.target.value)
               }} />
-            <Button content='Add comment' labelPosition='left' icon='edit' primary onClick={addCommentHandler}/>
-          </Form>
+            <Button
+              primary
+              content='Add comment'
+              labelPosition='left'
+              icon='edit'
+              onClick={addCommentHandler}/>
+          </Form>}
         </Comment.Group>
-        {blog.user.id === logedUser.id &&
+        {user && blog?.user?.id === user?.id &&
         <Button
           content='Delete blog'
           labelPosition='left'
@@ -90,13 +102,15 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs, user }) => {
 const mapStateToProps = state => {
   return {
     blogs: state.blogs,
-    user: state.user
+    user: state.user,
+    layout: state.layout
   }
 }
 
 const mapDispatchToProps = {
   deleteBlog,
-  getBlogs
+  getBlogs,
+  openSignInRequiredModal
 }
 
 const ConnectedFullBlog = connect(mapStateToProps, mapDispatchToProps)(FullBlog)

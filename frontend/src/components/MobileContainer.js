@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import {
@@ -10,9 +10,10 @@ import {
   Sticky
 } from 'semantic-ui-react'
 import { useActualPath } from '../utils/utils'
-import { setUser, reloadUser } from '../reducers/userReducer'
-import { setTimedNotification } from '../reducers/notificationReducer'
-import AddBlogForm from './AddBlogForm'
+import { setUser } from '../reducers/userReducer'
+import { openSignInRequiredModal, closeSignInRequiredModal } from '../reducers/layoutReducer'
+import AddBlogModal from './AddBlogModal'
+import SignInRequiredModal from './SignInRequiredModal'
 import Notification from './Notification'
 
 const MobileContainer = ({ children, Media }) => {
@@ -41,6 +42,10 @@ const MobileContainer = ({ children, Media }) => {
 
   return (
     <Media as={Sidebar.Pushable} at='mobile'>
+      <AddBlogModal
+        openedCreateBlogForm={openedCreateBlogForm}
+        openCreateBlogForm={openCreateBlogForm} />
+      <SignInRequiredModal />
       {currentPath !== '/signin' && currentPath !== '/signup' &&
       <Container>
         <Menu inverted fixed='top'>
@@ -49,13 +54,13 @@ const MobileContainer = ({ children, Media }) => {
           </Menu.Item>
           <Menu.Item
             position='right'
-            onClick={() => { openCreateBlogForm(true)}}>
+            onClick={() => {
+              if(!!user) openCreateBlogForm(true)
+              else dispatch(openSignInRequiredModal())
+            }}>
             <Icon name='add' /> Add blog </Menu.Item>
         </Menu>
       </Container>}
-      <AddBlogForm
-        openedCreateBlogForm={openedCreateBlogForm}
-        openCreateBlogForm={openCreateBlogForm} />
       <Sidebar.Pushable style={{ height: '100vh', transform: 'none' }}>
         <Sticky>
           <Sidebar

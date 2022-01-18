@@ -8,26 +8,30 @@ import {
   Dropdown
 } from 'semantic-ui-react'
 import { useActualPath } from '../utils/utils'
-import { setUser } from '../reducers/userReducer'
-import AddBlogForm from './AddBlogForm'
+import { openSignInRequiredModal, closeSignInRequiredModal} from '../reducers/layoutReducer'
+import AddBlogModal from './AddBlogModal'
+import SignInRequiredModal from './SignInRequiredModal'
 import Notification from './Notification'
+import { useAppLogout } from '../utils/utils'
 
 const DesktopContainer = ({ children, Media }) => {
   const currentPath = useActualPath()
   const history = useHistory()
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
-  const [open, setOpen] = useState(false)
+  const logout = useAppLogout()
 
-  const logout = () => {
-    window.localStorage.clear()
-    dispatch(setUser(null))
-    history.push('/signin')
-  }
+  const [addBlogModalOpenness, setAddBlogModalOpenness] = useState(false)
+  const openAddBlogModal = () => setAddBlogModalOpenness(true)
+  const closeAddBlogModal = () => setAddBlogModalOpenness(false)
 
   return (
     <Media greaterThan='mobile'>
-      <AddBlogForm openedCreateBlogForm={open} openCreateBlogForm={setOpen} />
+      <AddBlogModal
+        openness={addBlogModalOpenness}
+        open={openAddBlogModal}
+        close={closeAddBlogModal} />
+      <SignInRequiredModal />
       {currentPath !== '/signin' && currentPath !== '/signup' &&
       <Container>
         <Menu
@@ -37,7 +41,10 @@ const DesktopContainer = ({ children, Media }) => {
           <Container>
             <Dropdown item simple text='Blogs' onClick={() => { history.push('/blogs') }}>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => {setOpen(true)}}>Add blog</Dropdown.Item>
+                <Dropdown.Item onClick={() => {
+                  if(!!user) openAddBlogModal()
+                  else dispatch(openSignInRequiredModal())
+                }}>Add blog</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <Menu.Item
@@ -55,7 +62,7 @@ const DesktopContainer = ({ children, Media }) => {
                   inline
                   text={user === null ? '' : user.name}>
                   <Dropdown.Menu>
-                    <Dropdown.Item text='Logout' onClick={logout} />
+                    <Dropdown.Item text='Logout' onClick={() => {logout()}} />
                   </Dropdown.Menu>
                 </Dropdown>
               </span>
@@ -64,7 +71,6 @@ const DesktopContainer = ({ children, Media }) => {
               position='right'
               as='a'
               onClick={() => {
-                console.log("hii")
                 history.push('/signin')
               }}> Sign in
             </Menu.Item>}
