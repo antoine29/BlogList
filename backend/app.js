@@ -15,7 +15,7 @@ const Blog = require('./models/Blog')
 logger.info('connecting to', config.MONGODB_URI)
 
 mongoose
-	.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+	.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, dbName: 'BlogList' })
 	.then(() => logger.info('connected to MongoDB'))
 	.catch(error => logger.error('error connecting to MongoDB:', error.message))
 

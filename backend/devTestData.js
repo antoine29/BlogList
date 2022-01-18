@@ -70,11 +70,10 @@ const insertBlogs = async () => {
 }
 
 mongoose
-    .connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, dbName: 'BlogList' })
     .then(async () => {
         await insertUsers()
         await insertBlogs()
-        //await insertReviews()
     })
     .catch(error => console.error('error connecting to MongoDB:', error.message))
     .finally(() => {
