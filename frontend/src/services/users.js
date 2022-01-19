@@ -1,5 +1,7 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/users'
+import { getBackendUrl } from '../utils/utils'
+
+const baseUrl = `${getBackendUrl()}/api/users`
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
