@@ -18,7 +18,9 @@ const AppRouter = () => {
         <Route path='/signup'>
           <SignUpForm />
         </Route>
-        <PrivateRoute path='/blogs/:id' component={FullBlog}/>
+        <Route path='/blogs/:id' >
+          <FullBlog />
+        </Route>
         <Route path='/blogs'>
           <Blogs />
         </Route>
