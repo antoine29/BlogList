@@ -30,6 +30,7 @@ app.get('/info', async (req, res) => {
 	const count = await Blog.countDocuments({})
 	return res.send(`<p>Bloglist has info of ${count} blog entries</p><p>${new Date()}</p>`)
 })
+app.get('/health', async (req, res) => res.send('Healthy'))
 
 // ToDo: auth should ne accesible without credentials
 // other endpoints should be secured
@@ -38,7 +39,7 @@ app.use('/auth', authRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/blogs', blogsRouter)
 if (process.env.NODE_ENV === 'test')
-	app.use('/api/testing', testingRouter)
+app.use('/api/testing', testingRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
