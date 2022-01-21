@@ -28,6 +28,10 @@ There is a set of unitests and integration tests, run them with:
 ```console
 $ npm run test
 ```
+Aditionally, you can run the `devTestData.js` file to set some testing users/blogs
+```console
+$ node devTestData.js
+```
 
 ## Running as a docker container
 Build the project image with 
