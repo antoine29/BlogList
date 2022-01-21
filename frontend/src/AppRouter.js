@@ -6,6 +6,8 @@ import Blogs from './components/Blogs'
 import Users from './components/Users'
 import User from './components/User'
 import FullBlog from './components/FullBlog'
+import Error503 from './components/ErrorPages/Error503'
+import Error404 from './components/ErrorPages/Error404'
 import PrivateRoute from './PrivateRoute'
 
 const AppRouter = () => {
@@ -26,8 +28,11 @@ const AppRouter = () => {
         </Route>
         <PrivateRoute path='/users/:id' component={User}/>
         <PrivateRoute path='/users' component={Users}/>
-        <Route>
-          <Redirect to='/blogs' />
+        <Route path='/503'>
+          <Error503 />
+        </Route>
+        <Route path='*'>
+          <Error404/>
         </Route>
       </Switch>
     </Router>

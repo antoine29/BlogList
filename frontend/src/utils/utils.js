@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react"
 import { useLocation, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from "../reducers/userReducer"
+import { checkHealth } from '../services/health'
 
 export const useActualPath = () => {
   const location = useLocation()
@@ -13,7 +15,7 @@ export const useAppLogout = () => {
   const logout = () => {
     // to clear user in local storage
     window.localStorage.clear()
-    
+
     // to clear user in redux store
     dispatch(setUser(null))
 
@@ -36,4 +38,30 @@ export const getBackendUrl = () => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
   console.log(`Using BackendUrl: ${backendUrl}`)
   return backendUrl
+}
+
+export const useCheckBackendHealth = () => {
+  const [data, setData] = useState(null)
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    (
+      async () => {
+        try {
+          setLoading(true)
+          const response = await checkHealth()
+          setData(response)
+        }
+        catch (err) {
+          setError(err)
+        }
+        finally {
+          setLoading(false)
+        }
+      }
+    )()
+  }, [])
+
+  return { data, error, loading }
 }
