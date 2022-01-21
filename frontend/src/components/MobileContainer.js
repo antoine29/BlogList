@@ -31,7 +31,9 @@ const MobileContainer = ({ children, Media }) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
-  const [openedCreateBlogForm, openCreateBlogForm] = useState(false)
+  const [addBlogModalOpenness, setAddBlogModalOpenness] = useState(false)
+  const openAddBlogModal = () => setAddBlogModalOpenness(true)
+  const closeAddBlogModal = () => setAddBlogModalOpenness(false)
 
   const logout = () => {
     window.localStorage.clear()
@@ -43,8 +45,9 @@ const MobileContainer = ({ children, Media }) => {
   return (
     <Media as={Sidebar.Pushable} at='mobile'>
       <AddBlogModal
-        openedCreateBlogForm={openedCreateBlogForm}
-        openCreateBlogForm={openCreateBlogForm} />
+        openness={addBlogModalOpenness}
+        open={openAddBlogModal}
+        close={closeAddBlogModal} />
       <SignInRequiredModal />
       {currentPath !== '/signin' && currentPath !== '/signup' &&
       <Container>
@@ -55,7 +58,7 @@ const MobileContainer = ({ children, Media }) => {
           <Menu.Item
             position='right'
             onClick={() => {
-              if(!!user) openCreateBlogForm(true)
+              if(!!user) setAddBlogModalOpenness(true)
               else dispatch(openSignInRequiredModal())
             }}>
             <Icon name='add' /> Add blog </Menu.Item>
@@ -68,8 +71,7 @@ const MobileContainer = ({ children, Media }) => {
             animation='overlay'
             onHide={closeSideBar}
             visible={sidebarOpened}
-            inverted
-            vertical
+            inverted vertical
             width='thin'>
             {user &&
             <Menu.Item
@@ -100,8 +102,7 @@ const MobileContainer = ({ children, Media }) => {
             <Menu.Item
               as='a'
               onClick={() => {history.push('/signin')}}> Sign in
-            </Menu.Item>
-            }
+            </Menu.Item>}
           </Sidebar>
         </Sticky>
         <Sidebar.Pusher dimmed={sidebarOpened}>

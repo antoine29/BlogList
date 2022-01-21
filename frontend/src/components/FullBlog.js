@@ -67,7 +67,7 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs, user, openSignInRequiredModal }
           {blog.comments.map((comment, index) =>
           <Comment key={comment+index}>
             <Comment.Content>
-              <Comment.Author as='a'>{blog.user.name}</Comment.Author>
+              <Comment.Author as='a'>{blog.user.username}</Comment.Author>
               <Comment.Text>{comment}</Comment.Text>
             </Comment.Content>
           </Comment>)}

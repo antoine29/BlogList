@@ -9,17 +9,15 @@ const User = () => {
   const userMatcher = useRouteMatch('/users/:id')
 
   useEffect(() => {
-    let isMounted = true
     const userId = userMatcher ?
       userMatcher.params.id : null
     usersService
       .getAll()
       .then(users => {
         const user = users.find(_user => _user.id === userId)
-        if(isMounted) setUser(user)
+        setUser(user)
       })
-    return () => {isMounted = false}
-  })
+  }, [])
 
   return(
     user ?
@@ -29,19 +27,16 @@ const User = () => {
           <Header.Subheader>Added blogs:</Header.Subheader>
           <ul>
             <List divided relaxed>
-              {
-                user.blogs.map(blog =>
-                  <List.Item key={blog.id}>
-                    <List.Content>
-                      <List.Header>
-                        <Link to={`/blogs/${blog.id}`}>
-                          {blog.title}
-                        </Link>
-                      </List.Header>
-                    </List.Content>
-                  </List.Item>
-                )
-              }
+              {user.blogs.map(blog =>
+              <List.Item key={blog.id}>
+                <List.Content>
+                  <List.Header>
+                    <Link to={`/blogs/${blog.id}`}>
+                      {blog.title}
+                    </Link>
+                  </List.Header>
+                </List.Content>
+              </List.Item>)}
             </List>
           </ul>
         </Container>

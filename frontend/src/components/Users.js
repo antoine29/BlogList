@@ -15,7 +15,7 @@ const Users = () => {
 
   return (
     <ResponsiveContainer>
-      <Table unstackable={false} style={{ height: '100vh' }}>
+      <Table unstackable={true} style={{ height: '100vh' }}>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>User</Table.HeaderCell>
@@ -28,7 +28,7 @@ const Users = () => {
               <Table.Cell>
                 <Header as='h4'>
                   <Header.Content>
-                    <Link to={`/users/${user.id}`}>{user.name}</Link>
+                    <Link to={`/users/${user.id}`}>{user.username}</Link>
                   </Header.Content>
                 </Header>
               </Table.Cell>
