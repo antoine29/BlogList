@@ -34,11 +34,11 @@ Build the project image with
 ```console
 $ docker build . -t bloglist-backend
 ```
-An `.env.container` file is required as same for the local console running case. But be aware the project code should be able to reach the mongo db instance from within the container. Assuming you're still working with the previous mongo db docker container, the `MONGODB_URI` field would look as:
+An `.env.container` file is required, but be aware the project code should be able to reach the mongo db instance from within the container. Assuming you're still working with the previous mongo db docker container, the `MONGODB_URI` field would look as:
 ```
 MONGODB_URI='mongodb://admin:password@host.docker.internal:27017'
 ```
-Then, run the container with:
+And you would run the container with:
 ```console
 $ docker run -it -p 3001:3001 --name bloglist-backend --rm \
     --add-host=host.docker.internal:host-gateway \
