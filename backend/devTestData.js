@@ -50,6 +50,8 @@ const insertBlogs = async () => {
     const createdUser0Blog0 = await user0Blog0.save()
     console.log(createdUser0Blog0)
     createdBlogs["user0blog0"] = createdUser0Blog0
+    createdUsers["user0"].blogs = [createdBlogs["user0blog0"]]
+    createdUsers["user0"].save()
 
     const user1Blog0 = new Blog({
         title: "user1 blog0",
@@ -59,6 +61,8 @@ const insertBlogs = async () => {
     const createdUser1Blog0 = await user1Blog0.save()
     console.log(createdUser1Blog0)
     createdBlogs["user1blog0"] = createdUser1Blog0
+    createdUsers["user1"].blogs = [createdBlogs["user1blog0"]]
+    createdUsers["user1"].save()
 
     const user2Blog0 = new Blog({
         title: "user2 blog0",
@@ -67,6 +71,8 @@ const insertBlogs = async () => {
     const createdUser2Blog0 = await user2Blog0.save()
     console.log(createdUser2Blog0)
     createdBlogs["user2blog0"] = createdUser2Blog0
+    createdUsers["user2"].blogs = [createdBlogs["user2blog0"]]
+    createdUsers["user2"].save()
 }
 
 mongoose
