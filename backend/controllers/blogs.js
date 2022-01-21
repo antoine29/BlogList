@@ -50,8 +50,9 @@ blogsRouter.post('/', async (req, res) => {
 	}
 	if (!decodedToken.id) return res.status(401).json({ error: 'invalid token' })
 	const user = await User.findById(decodedToken.id)
-	req.body.likes = 0
+	req.body.likes = []
 	req.body.user = user._id
+	console.log("post blog", req.body)
 	const newBlog = new Blog(req.body)
 	const savedBlog = await newBlog.save()
 	user.blogs = user.blogs.concat(savedBlog._id)
