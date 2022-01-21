@@ -1,0 +1,38 @@
+version: '3.5' 
+
+services: 
+  bloglist-db:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27017:27017
+    container_name: bloglist-mongodb
+    networks:
+      - bloglist-network
+
+  bloglist-backend:
+    image: bloglist-backend
+    container_name: bloglist-backend
+    build: ./backend
+    environment:
+      - MONGODB_URI=mongodb://admin:password@bloglist-db:27017/
+      - PORT=3001
+      - SECRET=secret
+    ports:
+      - 3001:3001
+    networks:
+      - bloglist-network
+
+  bloglist-frontend: 
+    image: bloglist-frontend
+    container_name: bloglist-frontend
+    build: ./frontend
+    ports:
+      - 80:80
+    networks:
+      - bloglist-network
+
+networks:
+  bloglist-network:
