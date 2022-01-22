@@ -42,9 +42,8 @@ export const getBackendUrl = () => {
 
 export const getRouterType = () => {
   const deploymentServer = process.env.REACT_APP_DEPLOYMENT_SERVER
-  console.log('REACT_APP_DEPLOYMENT_SERVER:', deploymentServer)
-  const routerType = deploymentServer === 'gh-pages' ? 'hash' : 'browser'
-  console.log(`Using ${routerType} router.`)
+  console.log('deployment server:', deploymentServer)
+  return deploymentServer === 'gh-pages' ? 'hash' : 'browser'
 }
 
 export const useCheckBackendHealth = () => {

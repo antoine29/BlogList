@@ -37,7 +37,8 @@ const AppSwitch = () =>
 
 const AppRouter = () => {
   const routerType = getRouterType()
-
+  
+  console.log(`Using ${routerType} router.`)
   if (routerType === 'hash') {
     return (
       <HashRouter>
