@@ -47,7 +47,7 @@ const UserForm = ({onSubmitUser, mode}) => {
             </Form>
             {mode === "Sign In" ?
             <Message>New to us? <Link to='/signup'>Sign Up</Link></Message> :
-            <Message>Already registered? <Link href='/signin'>Sign In</Link></Message>}
+            <Message>Already registered? <Link to='/signin'>Sign In</Link></Message>}
           </Grid.Column>
         </Grid>
       </ResponsiveContainer>
